@@ -1,7 +1,7 @@
 let canvas;
 let orwb;
 let box;
-let gravity = 04;
+let gravity = 4;
 
 function setup() {
     //create canvas
