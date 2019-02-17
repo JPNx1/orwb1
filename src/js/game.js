@@ -5,6 +5,12 @@ let gravity = 1;
 let maxGrav = 10;
 let portal;
 let game;
+let welcomeScreen;
+let pauseScreen;
+let endScreen;
+let level1;
+let level2;
+let level3;
 
 function setup() {
     //create canvas
@@ -17,42 +23,62 @@ function setup() {
 
     //game
     game = new Game();
-
-    //orwb
-    orwb = new Orwb(width / 2, height / 2);
-
-    //box
-    box = new Box(300, 500);
-
-    //portal
-    portal = new Portal(200, 200);
+    game.initiate();
 
 }
 
 function draw() {
     background(255);
-    //orwb
-    orwb.display();
-    orwb.update();
-    //box
-    box.display();
-    //portal
-    portal.display();
-    portal.update();
+
     //game
     game.checkState();
 }
 
 function keyPressed() {
     //controls for game and space xd
+
+
     switch (keyCode) {
+        //space
         case 32:
-            orwb.jump();
+            if (game.state === 1) {
+                orwb.jump();
+            }
+            break;
+        case 27:
+            //escape
+            //If game is running, detect this key
+            if (game.state === 1) {
+                //set game to paused
+                game.state = 2;
+            } else {
+                //if game is not running and pause set it to resume
+                if (game.state === 2) {
+                    game.state = 3;
+                }
+            }
+
+            break;
+        case 13:
+            //enter
+            if (game.state === 0) {
+                //set game running
+                game.state = 1;
+                //load level 1
+                game.currentLevel = 1;
+            }
+
+            if(game.state === 4){
+                game.state =0;
+                game.initiate();
+            }
             break;
     }
+
+
 }
 
-
+//palyer character
 class Orwb {
     constructor(x, y) {
         this.x = x;
@@ -178,41 +204,189 @@ class Box {
 }
 
 class Game {
-    constructor(){
-        this.running = true;
-        this.gameOver = false;
+    constructor() {
+        this.state = 0;
+        this.currentLevel = null;
     }
 
-    checkState(){
-        if (this.gameOver){
-            noLoop();
+    initiate(){
+        //screen
+        welcomeScreen = new WelcomeScreen();
+        pauseScreen = new PauseScreen();
+        endScreen = new EndScreen();
+
+        //levels
+        level1 = new Level1();
+        level2 = new Level2();
+        level3 = new Level3();
+
+        //orwb
+        orwb = new Orwb(width / 2, height / 2);
+
+        //box
+        box = new Box(300, 500);
+
+        //portal
+        portal = new Portal(200, 200);
+    }
+
+    checkState() {
+        switch (this.state) {
+            //welcome
+            case 0:
+                welcomeScreen.display();
+                break;
+            //running
+            case 1:
+                level1.display();
+                switch (this.currentLevel) {
+                    case 1:
+                        level1.display();
+                        break;
+                    case 2:
+                        level2.display();
+                        break;
+                    case 3:
+                        level3.display();
+                        break;
+                }
+                break;
+            //paused
+            case 2:
+                pauseScreen.display();
+                break;
+            //resume
+            case 3:
+                pauseScreen.undisplay();
+                game.state = 1;
+                break;
+            //game over
+            case 4:
+                endScreen.display();
+                break;
         }
+
     }
 }
 
+class WelcomeScreen {
+    constructor() {
+        this.img = loadImage("img/orwb/orwb_static1.png");
+    }
+
+    display() {
+        print("Welcomescreen");
+        background(0);
+        image(this.img, (width / 2) - 75, 0, 150, 150);
+        fill(color(255, 255, 0));
+        textSize(50);
+        textAlign(CENTER);
+        text("Press ENTER to start", width / 2, height / 2);
+    }
+
+    undisplay() {
+
+    }
+}
+
+class PauseScreen {
+    constructor() {
+
+    }
+
+    display() {
+        print("Pausescreen");
+        textSize(50);
+        textAlign(CENTER);
+        text("Paused", width / 2, height / 2);
+        text("Press ESCAPE to resume", width / 2, height / 1.5);
+    }
+
+    undisplay() {
+
+    }
+}
+
+class EndScreen {
+    constructor() {
+
+    }
+
+    display() {
+        print("gameOver");
+        textSize(50);
+        textAlign(CENTER);
+        text("Game over!", width / 2, height / 2);
+        text("Press Enter to restart", width / 2, height / 1.5);
+    }
+
+    undisplay() {
+
+    }
+}
+
+class Level1 {
+
+    display() {
+        background(255);
+        //orwb
+        orwb.display();
+        orwb.update();
+        //box
+        box.display();
+        //portal
+        portal.display();
+        portal.update();
+    }
+}
+
+class Level2 {
+    display(){
+        print("Level 2");
+    }
+}
+
+class Level3 {
+
+    display(){
+        print("Level 3");
+    }
+}
+
+
 class Portal {
-    constructor(x, y){
+    constructor(x, y) {
         this.x = x;
         this.y = y;
         this.radius = 20;
         this.color = color(255, 255, 0);
         this.hit = false;
     }
-    display(){
+
+    display() {
         fill(this.color);
         ellipse(this.x, this.y, this.radius, this.radius);
     }
 
-    update(){
+    update() {
         this.detectCollision();
     }
 
-    detectCollision(){
+    detectCollision() {
         this.hit = collideRectCircle(orwb.x, orwb.y, orwb.width, orwb.height, this.x, this.y, this.radius);
 
-        if(this.hit){
-            game.running = false;
-            game.gameOver = true;
+        if (this.hit) {
+            switch (game.currentLevel) {
+                case 1:
+                    game.currentLevel = 2;
+                    break;
+                case 2:
+                    game.currentLevel = 3;
+                    break;
+                case 3:
+                    game.state = 4;
+                    break;
+            }
         }
     }
 

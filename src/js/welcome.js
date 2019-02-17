@@ -1,5 +1,4 @@
 var open = false;
-console.log("ree");
 
 $("#container").click(function () {
     if(open){
