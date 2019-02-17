@@ -1,8 +1,11 @@
 let canvas;
 let orwb;
-let box;
 let gravity = 1;
 let maxGrav = 10;
+
+let box, box1, box2, box3;
+
+let jumpHeight = -50;
 let portal;
 let game;
 let welcomeScreen;
@@ -12,9 +15,11 @@ let level1;
 let level2;
 let level3;
 
+//todo add level setups, point system, enemies, collision stuff, timer, main function (orwb as light source!)
+
 function setup() {
     //create canvas
-    canvas = createCanvas(800, 800);
+    canvas = createCanvas(705, 705);
     //relocates canvas to the p5 html div
     canvas.parent('p5');
 
@@ -32,6 +37,8 @@ function draw() {
 
     //game
     game.checkState();
+    game.grid();
+
 }
 
 function keyPressed() {
@@ -68,8 +75,8 @@ function keyPressed() {
                 game.currentLevel = 1;
             }
 
-            if(game.state === 4){
-                game.state =0;
+            if (game.state === 4) {
+                game.state = 0;
                 game.initiate();
             }
             break;
@@ -81,14 +88,17 @@ function keyPressed() {
 //palyer character
 class Orwb {
     constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.width = 50;
-        this.height = 50;
+        this.x = game.squareX * x;
+        this.y = game.squareY * y;
+        this.width = 64;
+        this.height = 64;
         this.hit = false;
+        this.hit1 = false;
         this.onGround = false;
 
-        this.yVel = -28;
+        this.speed = 5;
+
+        this.yVel = jumpHeight;
         this.ground = this.y + this.height;
         this.isJumping = false;
     }
@@ -113,8 +123,17 @@ class Orwb {
         }
     }
 
+    //checks horizontal collision. Currently applies to all collision and i'm kinda done bc i don't know how to precede.
+    //todo How to differentiate between horizontal and vertial detection AND hwo to check for all boxes
+    horizontalCollision() {
+        this.hit1 = collideRectRect(box.x, box.y, box.width, box.height, this.x, this.y, this.width, this.height);
+    }
+
     verticalCollision() {
         this.hit = collideRectRect(box.x, box.y, box.width, box.height, this.x, this.y, this.width, this.height);
+        //this.hit = collideRectRect(box1.x, box1.y, box1.width, box1.height, this.x, this.y, this.width, this.height);
+        //this.hit = collideRectRect(box2.x, box2.y, box2.width, box2.height, this.x, this.y, this.width, this.height);
+        //this.hit = collideRectRect(box3.x, box3.y, box3.width, box3.height, this.x, this.y, this.width, this.height);
 
         if (this.hit) {
             print("Height at detection: " + this.y);
@@ -148,15 +167,23 @@ class Orwb {
     }
 
     //moves orwb to the left
+    //todo fix collision
     moveLeft() {
+        //this.horizontalCollision();
         print("Left, x:" + this.x);
-        this.x -= 5;
+        if (this.x >= 0 && !this.hit1) {
+            this.x -= this.speed;
+        }
+
     }
 
     //moves orwb to the right
     moveRight() {
+        //this.horizontalCollision();
         print("Right, x:" + this.x);
-        this.x += 5;
+        if (this.x <= width - this.width && !this.hit1) {
+            this.x += this.speed;
+        }
     }
 
     //handles the jump animation
@@ -182,7 +209,7 @@ class Orwb {
 
         //set the values if not jumping
         if (!this.isJumping && this.onGround) {
-            this.yVel = -28;
+            this.yVel = jumpHeight;
             this.isJumping = true;
         }
     }
@@ -190,10 +217,10 @@ class Orwb {
 
 class Box {
     constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.width = 200;
-        this.height = 8;
+        this.x = game.squareX * x;
+        this.y = game.squareY * y;
+        this.width = 64;
+        this.height = 64;
         this.color = color(255, 0, 0);
     }
 
@@ -207,9 +234,24 @@ class Game {
     constructor() {
         this.state = 0;
         this.currentLevel = null;
+        this.gridX = 11;
+        this.gridY = 11;
+        this.squareX = ((width - 1) / this.gridX);
+        this.squareY = ((width - 1) / this.gridY);
+
     }
 
-    initiate(){
+    grid() {
+
+        for (let rows = 0; rows < this.gridX; rows++) {
+            for (let colums = 0; colums < this.gridY; colums++) {
+                fill(0, 0, 0, 100);
+                rect(rows * this.squareX, colums * this.squareY, width / this.gridX, width / this.gridX);
+            }
+        }
+    }
+
+    initiate() {
         //screen
         welcomeScreen = new WelcomeScreen();
         pauseScreen = new PauseScreen();
@@ -220,14 +262,7 @@ class Game {
         level2 = new Level2();
         level3 = new Level3();
 
-        //orwb
-        orwb = new Orwb(width / 2, height / 2);
 
-        //box
-        box = new Box(300, 500);
-
-        //portal
-        portal = new Portal(200, 200);
     }
 
     checkState() {
@@ -238,15 +273,17 @@ class Game {
                 break;
             //running
             case 1:
-                level1.display();
                 switch (this.currentLevel) {
                     case 1:
+
                         level1.display();
                         break;
                     case 2:
+
                         level2.display();
                         break;
                     case 3:
+
                         level3.display();
                         break;
                 }
@@ -326,6 +363,20 @@ class EndScreen {
 }
 
 class Level1 {
+    constructor() {
+        //orwb
+        orwb = new Orwb(0, 8);
+
+        //box
+        box = new Box(0, 10);
+        box1 = new Box(1, 10);
+        box2 = new Box(2, 10);
+        box3 = new Box(3, 10);
+
+        //portal
+        portal = new Portal(7, 7);
+
+    }
 
     display() {
         background(255);
@@ -334,6 +385,9 @@ class Level1 {
         orwb.update();
         //box
         box.display();
+        box1.display();
+        box2.display();
+        box3.display();
         //portal
         portal.display();
         portal.update();
@@ -341,14 +395,14 @@ class Level1 {
 }
 
 class Level2 {
-    display(){
+    display() {
         print("Level 2");
     }
 }
 
 class Level3 {
 
-    display(){
+    display() {
         print("Level 3");
     }
 }
@@ -356,8 +410,8 @@ class Level3 {
 
 class Portal {
     constructor(x, y) {
-        this.x = x;
-        this.y = y;
+        this.x = game.squareX * x;
+        this.y = game.squareY * y;
         this.radius = 20;
         this.color = color(255, 255, 0);
         this.hit = false;
@@ -372,9 +426,11 @@ class Portal {
         this.detectCollision();
     }
 
+    //if collision detected, orwb reached the portal and goes to the next level
     detectCollision() {
         this.hit = collideRectCircle(orwb.x, orwb.y, orwb.width, orwb.height, this.x, this.y, this.radius);
 
+        //determines to which level orwb is being ported
         if (this.hit) {
             switch (game.currentLevel) {
                 case 1:
@@ -384,6 +440,7 @@ class Portal {
                     game.currentLevel = 3;
                     break;
                 case 3:
+                    //in this case, the game is over!
                     game.state = 4;
                     break;
             }
@@ -392,10 +449,13 @@ class Portal {
 
 }
 
+//todo add enemies
+//enemy class
 class Enemy {
 
 }
 
+//todo add points
 class Points {
 
 }
