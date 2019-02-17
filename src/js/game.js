@@ -22,7 +22,6 @@ function setup() {
     canvas = createCanvas(705, 705);
     //relocates canvas to the p5 html div
     canvas.parent('p5');
-
     //background
     background(255);
 
