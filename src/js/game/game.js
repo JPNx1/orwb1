@@ -14,8 +14,6 @@ let pauseScreen;
 let endScreen;
 
 let orwb;
-let gravity = 1;
-let maxGrav = 7;
 
 let jumpHeight = -50;
 
@@ -42,7 +40,7 @@ function setup() {
     //relocates canvas to the p5 html div
     canvas.parent('p5');
 
-    frameRate(10);
+    //frameRate(10);
 
     //background
     background(255);
@@ -112,13 +110,7 @@ function keyPressed() {
             }
             break;
     }
-
-
 }
-
-
-
-
 
 class Game {
     constructor() {

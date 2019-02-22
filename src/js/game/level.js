@@ -92,7 +92,7 @@ class Level2 {
 class Level3 {
     constructor() {
 //orwb
-        orwb = new Orwb(0, 8);
+        orwb = new Orwb(0, 3);
 
 
         //box

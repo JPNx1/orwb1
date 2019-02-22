@@ -5,17 +5,18 @@ class Orwb {
         this.y = game.squareY * y;
         this.width = 64;
         this.height = 64;
-        this.hit = false;
-        this.hit1 = false;
+
+
+        //moving bools
         this.onGround = false;
+        this.canMove = true;
 
         this.speed = 10;
 
-        this.yVel = jumpHeight;
-        this.ground = this.y + this.height;
-        this.isJumping = false;
+        this.yVel = 0;
 
-        this.canMove = true;
+        this.tollerance = 55;
+
     }
 
     //displays orwb
@@ -29,14 +30,30 @@ class Orwb {
         //calls function to check if collision is detected
         this.verticalCollision();
 
-        //if orwb is not ground, apply gravity
-        if (!this.onGround) {
-            this.y += gravity;
+        print(this.yVel);
+
+        if(!this.onGround){
+            this.y += this.yVel;
         }
-        //appear on top if out of screen
-        if (this.y > height) {
-            this.y = 0;
+
+        //this.y += this.yVel;
+
+        if (this.yVel < 15) {
+            this.yVel++;
         }
+
+
+
+
+
+        // //if orwb is not ground, apply gravity
+        // if (!this.onGround) {
+        //     this.y += gravity;
+        // }
+        // //appear on top if out of screen
+        // if (this.y > height) {
+        //     this.y = 0;
+        // }
     }
 
     //checks horizontal collision. Currently applies to all collision and i'm kinda done bc i don't know how to precede.
@@ -69,7 +86,7 @@ class Orwb {
             //print(this.hit1);
 
             if (collideRectRect(box[i].x, box[i].y, box[i].width, box[i].height, this.x, this.y, this.width, this.height)
-                && this.y >= box[i].y - 50 && this.y <= box[i].y + 50) {
+                && this.y >= box[i].y - this.tollerance && this.y <= box[i].y + this.tollerance) {
                 this.canMove = false;
             }
         }
@@ -81,29 +98,22 @@ class Orwb {
         //this.hit = collideRectRect(box1.x, box1.y, box1.width, box1.height, this.x, this.y, this.width, this.height);
         //this.hit = collideRectRect(box2.x, box2.y, box2.width, box2.height, this.x, this.y, this.width, this.height);
         //this.hit = collideRectRect(box3.x, box3.y, box3.width, box3.height, this.x, this.y, this.width, this.height);
-        let i = 0;
 
         for (let j = 0; j < box.length; j++) {
-            this.hit = collideRectRect(box[j].x, box[j].y, box[j].width, box[j].height, this.x, this.y, this.width, this.height);
-
-            if (this.hit &&
-                this.x >= box[j].x- 50 && this.x <= box[j].x +50
-            ) {
+            //this.hit = collideRectRect(box[j].x, box[j].y, box[j].width, box[j].height, this.x, this.y, this.width, this.height);
+            if (collideRectRect(box[j].x, box[j].y, box[j].width, box[j].height, this.x, this.y, this.width, this.height) && this.x >= box[j].x - this.tollerance && this.x <= box[j].x + this.tollerance) {
                 //print("Height at detection: " + this.y);
                 //print("..." + box[i] + i);
                 box[j].color = color(0, 255, 0);
 
                 this.onGround = true;
+
                 //set gravity back to initial gravity
-                gravity = 1;
                 return;
             } else {
                 box[j].color = color(255, 0, 0);
                 this.onGround = false;
                 //increase gravity while falling
-                if (gravity <= maxGrav) {
-                    gravity += 1;
-                }
             }
 
         }
@@ -114,8 +124,6 @@ class Orwb {
         // if(i > 0) {
         //     i--;
         // }
-
-
     }
 
     //updates orwb after something changed
@@ -129,7 +137,7 @@ class Orwb {
         }
 
         this.applyGravity();
-        this.jumpAnimation();
+        //this.jumpAnimation();
     }
 
     //moves orwb to the left
@@ -137,19 +145,18 @@ class Orwb {
     moveLeft() {
         this.horizontalCollision();
         //print("Left, x:" + this.x);
-        if (this.x >= 0  && this.canMove) {
+        if (this.x >= 0 && this.canMove) {
             this.x -= this.speed;
         } else {
             this.x += this.speed;
         }
-
     }
 
     //moves orwb to the right
     moveRight() {
         this.horizontalCollision();
         //print("Right, x:" + this.x);
-        if (this.x <= width - this.width  && this.canMove) {
+        if (this.x <= width - this.width && this.canMove) {
             this.x += this.speed;
         } else {
             this.x -= this.speed;
@@ -157,38 +164,36 @@ class Orwb {
     }
 
     //handles the jump animation
-    jumpAnimation() {
-        //executed if orwb is not jumping and on ground
-        if (this.isJumping) {
-            //change orwbs position
-            this.yVel += gravity;
-            this.y += this.yVel;
-            //reset the jumping values
-            if (this.y > this.ground) {
-                this.y = this.ground;
-                this.yVel = 0;
-                this.isJumping = false;
-            }
-        }
-    }
+    //jumpAnimation() {
+    //    //executed if orwb is not jumping and on ground
+    //    if (this.isJumping) {
+    //        //change orwbs position
+    //        this.yVel += gravity;
+    //        this.y += this.yVel;
+    //        //reset the jumping values
+    //        if (this.y > this.ground) {
+    //            this.y = this.ground;
+    //            this.yVel = 0;
+    //            this.isJumping = false;
+    //        }
+    //    }
+    //}
 
     //initiates jumping
     jump() {
 
         print("JUMP");
-        this.ground = this.y;
-
-
-        //set the values if not jumping
-        if (!this.isJumping) {
-            this.yVel = jumpHeight;
-            this.isJumping = true;
+        if (this.onGround) {
+            this.yVel = -20;
+            this.y += this.yVel;
         }
-
-        this.yVel = gravity;
-        this.y = this.yVel;
-
-
-
+        //this.ground = this.y;
+        ////set the values if not jumping
+        //if (!this.isJumping) {
+        //    this.yVel = jumpHeight;
+        //    this.isJumping = true;
+        //}
+        //this.yVel = gravity;
+        //this.y = this.yVel;
     }
 }
