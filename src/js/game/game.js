@@ -15,9 +15,7 @@ let endScreen;
 
 let orwb;
 
-let jumpHeight = -50;
-
-let box=[];
+let box = [];
 let point;
 
 let portal;
@@ -28,18 +26,16 @@ let level1;
 let level2;
 let level3;
 
-//quadtree stuff
-let boundery;
-let quadtree;
-
 //todo add level setups, point system, enemies, collision stuff, timer, main function (orwb as light source!)
 
 function setup() {
     //create canvas
     canvas = createCanvas(705, 705);
+
     //relocates canvas to the p5 html div
     canvas.parent('p5');
 
+    //framerate
     frameRate(60);
 
     //background
@@ -48,32 +44,18 @@ function setup() {
     //game
     game = new Game();
     game.initiate();
-
-    //quadtree
-    //boundery = new Rectangle(0, 0, width, height);
-    //quadtree = new Quadtree(boundery);
-    //
-    //for (let i = 0; i<1;i++){
-    //    let p = new Point(50, 50);
-    //    quadtree.insert(p);
-    //}
-
-
 }
 
 function draw() {
-    background(255);
+    background(0);
 
     //game
     game.checkState();
     game.grid();
-
 }
 
 function keyPressed() {
-    //controls for game and space xd
-
-
+    //controls for game and space
     switch (keyCode) {
         //space
         case 32:
@@ -81,6 +63,7 @@ function keyPressed() {
                 orwb.jump();
             }
             break;
+
         case 27:
             //escape
             //If game is running, detect this key
@@ -95,6 +78,7 @@ function keyPressed() {
             }
 
             break;
+
         case 13:
             //enter
             if (game.state === 0) {
@@ -120,14 +104,12 @@ class Game {
         this.gridY = 11;
         this.squareX = ((width - 1) / this.gridX);
         this.squareY = ((width - 1) / this.gridY);
-
     }
 
     grid() {
-
         for (let rows = 0; rows < this.gridX; rows++) {
             for (let colums = 0; colums < this.gridY; colums++) {
-                fill(0, 0, 0, 100);
+                fill(0, 0, 0, 30);
                 rect(rows * this.squareX, colums * this.squareY, width / this.gridX, width / this.gridX);
             }
         }
@@ -143,8 +125,6 @@ class Game {
         level1 = new Level1();
         level2 = new Level2();
         level3 = new Level3();
-
-
     }
 
     checkState() {
@@ -157,34 +137,34 @@ class Game {
             case 1:
                 switch (this.currentLevel) {
                     case 1:
-
                         level1.display();
                         break;
-                    case 2:
 
+                    case 2:
                         level2.display();
                         break;
-                    case 3:
 
+                    case 3:
                         level3.display();
                         break;
                 }
                 break;
+
             //paused
             case 2:
                 pauseScreen.display();
                 break;
+
             //resume
             case 3:
-                pauseScreen.undisplay();
                 game.state = 1;
                 break;
+
             //game over
             case 4:
                 endScreen.display();
                 break;
         }
-
     }
 }
 

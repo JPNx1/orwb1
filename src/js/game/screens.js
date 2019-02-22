@@ -1,3 +1,6 @@
+let img;
+
+
 class WelcomeScreen {
     constructor() {
         this.img = loadImage("img/orwb/orwb_static1.png");
@@ -12,44 +15,37 @@ class WelcomeScreen {
         textAlign(CENTER);
         text("Press ENTER to start", width / 2, height / 2);
     }
-
-    undisplay() {
-
-    }
 }
 
+
 class PauseScreen {
-    constructor() {
-
+    constructor(){
+        this.img = loadImage("img/orwb/orwb_static1.png");
     }
-
     display() {
         print("Pausescreen");
+        background(0);
+        image(this.img, (width / 2) - 75, 0, 150, 150);
+        fill(color(255, 255, 0));
         textSize(50);
         textAlign(CENTER);
         text("Paused", width / 2, height / 2);
         text("Press ESCAPE to resume", width / 2, height / 1.5);
     }
-
-    undisplay() {
-
-    }
 }
 
 class EndScreen {
-    constructor() {
-
+    constructor(){
+        this.img = loadImage("img/orwb/orwb_static1.png");
     }
-
     display() {
         print("gameOver");
+        background(0);
+        image(this.img, (width / 2) - 75, 0, 150, 150);
+        fill(color(255, 255, 0));
         textSize(50);
         textAlign(CENTER);
         text("Game over!", width / 2, height / 2);
         text("Press Enter to restart", width / 2, height / 1.5);
-    }
-
-    undisplay() {
-
     }
 }
