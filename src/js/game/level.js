@@ -1,3 +1,4 @@
+//classes for level. They set up the locations and display the boxes, character, enemies and the portals
 class Level1 {
     constructor() {
         //orwb
@@ -15,6 +16,10 @@ class Level1 {
         //portal
         portal = new Portal(7, 7);
 
+        //point
+        point = new Points(5, 6);
+
+
     }
 
     display() {
@@ -26,11 +31,13 @@ class Level1 {
         //box
         for (let i = 0; i < box.length; i++) {
             box[i].display();
-            print(box[i]);
+            //print(box[i]);
         }
         //portal
         portal.display();
         portal.update();
+
+        point.update();
 
     }
 }
@@ -48,15 +55,24 @@ class Level2 {
         box[1] = new Box(1, 10);
         box[2] = new Box(2, 10);
         box[3] = new Box(3, 10);
+
         box[4] = new Box(2, 8);
+
+        box[5] = new Box(4, 10);
+        box[6] = new Box(5, 10);
+        box[7] = new Box(6, 10);
+        box[8] = new Box(7, 10);
+        box[9] = new Box(8, 10);
+        box[10] = new Box(9, 10);
+        box[11] = new Box(10, 10);
 
 
         //portal
-        portal = new Portal(7, 9);
+        portal1 = new Portal(7, 9);
     }
 
     display() {
-        print("Level 2");
+        //print("Level 2");
         background(255);
         //orwb
         orwb.display();
@@ -65,11 +81,11 @@ class Level2 {
         //box
         for (let i = 0; i < box.length; i++) {
             box[i].display();
-            print(box[i]);
+            //print(box[i]);
         }
         //portal
-        portal.display();
-        portal.update();
+        portal1.display();
+        portal1.update();
     }
 }
 
@@ -88,11 +104,11 @@ class Level3 {
 
 
         //portal
-        portal = new Portal(5, 7);
+        portal2 = new Portal(5, 7);
     }
 
     display() {
-        print("Level 3");
+        //print("Level 3");
         background(255);
         //orwb
         orwb.display();
@@ -101,11 +117,11 @@ class Level3 {
         //box
         for (let i = 0; i < box.length; i++) {
             box[i].display();
-            print(box[i]);
+            //print(box[i]);
         }
         //portal
-        portal.display();
-        portal.update();
+        portal2.display();
+        portal2.update();
     }
 }
 

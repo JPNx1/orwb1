@@ -14,6 +14,8 @@ class Orwb {
         this.yVel = jumpHeight;
         this.ground = this.y + this.height;
         this.isJumping = false;
+
+        this.canMove = true;
     }
 
     //displays orwb
@@ -26,6 +28,7 @@ class Orwb {
     applyGravity() {
         //calls function to check if collision is detected
         this.verticalCollision();
+
         //if orwb is not ground, apply gravity
         if (!this.onGround) {
             this.y += gravity;
@@ -38,30 +41,81 @@ class Orwb {
 
     //checks horizontal collision. Currently applies to all collision and i'm kinda done bc i don't know how to precede.
     //todo How to differentiate between horizontal and vertial detection AND hwo to check for all boxes
+
+    //Checks if the character has a vertical collision with the boxes. It is called before moving left or right
     horizontalCollision() {
-        this.hit1 = collideRectRect(box.x, box.y, box.width, box.height, this.x, this.y, this.width, this.height);
+        //this.hit1 = collideRectRect(box.x, box.y, box.width, box.height, this.x, this.y, this.width, this.height);
+        //let i = 0;
+        //while (i < box.length && !this.hit) {
+        //    this.hit = collideRectR//ect(box[i].x, box[i].y, box[i].width, box[i].height, this.x, this.y, this.width, this.height);
+        //    i++;
+        //}
+        //if(i > 0) {
+        //    i--;
+        //}
+
+        //if (this.hit) {
+        //    print("Height at detection: " + this.y);
+        //    print("..." + box[i] + i);
+        //    box[i].color = color(0, 255, 0);
+        //} else {//
+        //    box[i].color = color(255, 0, 0);
+        //}
+
+
+        this.canMove = true;
+        for (let i = 0; i < box.length; i++) {
+            //this.hit1 = collideRectRect(box[i].x, box[i].y, box[i].width, box[i].height, this.x, this.y, this.width, this.height);
+            //print(this.hit1);
+
+            if (collideRectRect(box[i].x, box[i].y, box[i].width, box[i].height, this.x, this.y, this.width, this.height)
+                && this.y >= box[i].y - 50 && this.y <= box[i].y + 50) {
+                this.canMove = false;
+            }
+        }
     }
 
+    //checks if the character hits the ground. Is called every time before gravity is applied
     verticalCollision() {
-        this.hit = collideRectRect(box[0].x, box[0].y, box[0].width, box[0].height, this.x, this.y, this.width, this.height);
+        //this.hit = collideRectRect(box[0].x, box[0].y, box[0].width, box[0].height, this.x, this.y, this.width, this.height);
         //this.hit = collideRectRect(box1.x, box1.y, box1.width, box1.height, this.x, this.y, this.width, this.height);
         //this.hit = collideRectRect(box2.x, box2.y, box2.width, box2.height, this.x, this.y, this.width, this.height);
         //this.hit = collideRectRect(box3.x, box3.y, box3.width, box3.height, this.x, this.y, this.width, this.height);
+        let i = 0;
 
-        if (this.hit) {
-            print("Height at detection: " + this.y);
-            box.color = color(0, 255, 0);
-            this.onGround = true;
-            //set gravity back to initial gravity
-            gravity = 2;
-        } else {
-            box.color = color(255, 0, 0);
-            this.onGround = false;
-            //increase gravity while falling
-            if (gravity <= maxGrav) {
-                gravity += 0.1;
+        for (let j = 0; j < box.length; j++) {
+            this.hit = collideRectRect(box[j].x, box[j].y, box[j].width, box[j].height, this.x, this.y, this.width, this.height);
+
+            if (this.hit &&
+                this.x >= box[j].x- 50 && this.x <= box[j].x +50
+            ) {
+                //print("Height at detection: " + this.y);
+                //print("..." + box[i] + i);
+                box[j].color = color(0, 255, 0);
+
+                this.onGround = true;
+                //set gravity back to initial gravity
+                gravity = 1;
+                return;
+            } else {
+                box[j].color = color(255, 0, 0);
+                this.onGround = false;
+                //increase gravity while falling
+                if (gravity <= maxGrav) {
+                    gravity += 1;
+                }
             }
+
         }
+        // while (i < box.length && !this.hit) {
+        //     this.hit = collideRectRect(box[i].x, box[i].y, box[i].width, box[i].height, this.x, this.y, this.width, this.height);
+        //     i++;
+        // }
+        // if(i > 0) {
+        //     i--;
+        // }
+
+
     }
 
     //updates orwb after something changed
@@ -76,26 +130,29 @@ class Orwb {
 
         this.applyGravity();
         this.jumpAnimation();
-
     }
 
     //moves orwb to the left
     //todo fix collision
     moveLeft() {
-        //this.horizontalCollision();
-        print("Left, x:" + this.x);
-        if (this.x >= 0 && !this.hit1) {
+        this.horizontalCollision();
+        //print("Left, x:" + this.x);
+        if (this.x >= 0  && this.canMove) {
             this.x -= this.speed;
+        } else {
+            this.x += this.speed;
         }
 
     }
 
     //moves orwb to the right
     moveRight() {
-        //this.horizontalCollision();
-        print("Right, x:" + this.x);
-        if (this.x <= width - this.width && !this.hit1) {
+        this.horizontalCollision();
+        //print("Right, x:" + this.x);
+        if (this.x <= width - this.width  && this.canMove) {
             this.x += this.speed;
+        } else {
+            this.x -= this.speed;
         }
     }
 
@@ -117,13 +174,21 @@ class Orwb {
 
     //initiates jumping
     jump() {
+
         print("JUMP");
         this.ground = this.y;
 
+
         //set the values if not jumping
-        if (!this.isJumping && this.onGround) {
+        if (!this.isJumping) {
             this.yVel = jumpHeight;
             this.isJumping = true;
         }
+
+        this.yVel = gravity;
+        this.y = this.yVel;
+
+
+
     }
 }

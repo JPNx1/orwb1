@@ -14,12 +14,17 @@ let pauseScreen;
 let endScreen;
 
 let orwb;
-let gravity = 2.5;
+let gravity = 1;
 let maxGrav = 7;
 
-let jumpHeight = -35;
-let portal;let box =[];
+let jumpHeight = -50;
 
+let box=[];
+let point;
+
+let portal;
+let portal1;
+let portal2;
 
 let level1;
 let level2;
@@ -36,6 +41,9 @@ function setup() {
     canvas = createCanvas(705, 705);
     //relocates canvas to the p5 html div
     canvas.parent('p5');
+
+    frameRate(10);
+
     //background
     background(255);
 
