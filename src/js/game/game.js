@@ -6,24 +6,28 @@ https://www.youtube.com/channel/UCvjgXvBlbQiydffZU7m1_aw
 https://creative-coding.decontextualize.com/making-games-with-p5-play/
 https://gamedevelopment.tutsplus.com/tutorials/quick-tip-avoid-game-watch-gravity-in-your-characters-jumps--gamedev-6759
  */
-
-
 let canvas;
-let orwb;
-let gravity = 1;
-let maxGrav = 10;
-
-let box, box1, box2, box3;
-
-let jumpHeight = -50;
-let portal;
 let game;
+
 let welcomeScreen;
 let pauseScreen;
 let endScreen;
+
+let orwb;
+let gravity = 2.5;
+let maxGrav = 7;
+
+let jumpHeight = -35;
+let portal;let box =[];
+
+
 let level1;
 let level2;
 let level3;
+
+//quadtree stuff
+let boundery;
+let quadtree;
 
 //todo add level setups, point system, enemies, collision stuff, timer, main function (orwb as light source!)
 
@@ -38,6 +42,16 @@ function setup() {
     //game
     game = new Game();
     game.initiate();
+
+    //quadtree
+    //boundery = new Rectangle(0, 0, width, height);
+    //quadtree = new Quadtree(boundery);
+    //
+    //for (let i = 0; i<1;i++){
+    //    let p = new Point(50, 50);
+    //    quadtree.insert(p);
+    //}
+
 
 }
 

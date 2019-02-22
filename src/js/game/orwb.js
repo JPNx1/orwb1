@@ -9,7 +9,7 @@ class Orwb {
         this.hit1 = false;
         this.onGround = false;
 
-        this.speed = 5;
+        this.speed = 10;
 
         this.yVel = jumpHeight;
         this.ground = this.y + this.height;
@@ -43,7 +43,7 @@ class Orwb {
     }
 
     verticalCollision() {
-        this.hit = collideRectRect(box.x, box.y, box.width, box.height, this.x, this.y, this.width, this.height);
+        this.hit = collideRectRect(box[0].x, box[0].y, box[0].width, box[0].height, this.x, this.y, this.width, this.height);
         //this.hit = collideRectRect(box1.x, box1.y, box1.width, box1.height, this.x, this.y, this.width, this.height);
         //this.hit = collideRectRect(box2.x, box2.y, box2.width, box2.height, this.x, this.y, this.width, this.height);
         //this.hit = collideRectRect(box3.x, box3.y, box3.width, box3.height, this.x, this.y, this.width, this.height);
@@ -59,7 +59,7 @@ class Orwb {
             this.onGround = false;
             //increase gravity while falling
             if (gravity <= maxGrav) {
-                gravity += 1;
+                gravity += 0.1;
             }
         }
     }

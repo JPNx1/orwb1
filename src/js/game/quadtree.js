@@ -9,8 +9,8 @@ https://www.gamedev.net/forums/topic/621014-simultaneous-multiple-object-collisi
  */
 
 class Quadtree{
-    constructor(x, y){
-        this.x = x;
+    constructor(boundary){
+        this.boundary = boundary;
         this.y = y;
     }
 }
