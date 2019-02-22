@@ -5,18 +5,13 @@ class Orwb {
         this.y = game.squareY * y;
         this.width = 64;
         this.height = 64;
-
-
         //moving bools
         this.onGround = false;
         this.canMove = true;
-
+        //moving vars
         this.speed = 10;
-
         this.yVel = 0;
-
-        this.tollerance = 55;
-
+        this.tollerance = 59;
     }
 
     //displays orwb
@@ -29,23 +24,13 @@ class Orwb {
     applyGravity() {
         //calls function to check if collision is detected
         this.verticalCollision();
-
-        print(this.yVel);
-
-        if(!this.onGround){
+        if (!this.onGround) {
             this.y += this.yVel;
         }
-
-        //this.y += this.yVel;
-
+        //increase fall speed over time
         if (this.yVel < 15) {
             this.yVel++;
         }
-
-
-
-
-
         // //if orwb is not ground, apply gravity
         // if (!this.onGround) {
         //     this.y += gravity;
@@ -57,7 +42,6 @@ class Orwb {
     }
 
     //checks horizontal collision. Currently applies to all collision and i'm kinda done bc i don't know how to precede.
-    //todo How to differentiate between horizontal and vertial detection AND hwo to check for all boxes
 
     //Checks if the character has a vertical collision with the boxes. It is called before moving left or right
     horizontalCollision() {
@@ -78,8 +62,6 @@ class Orwb {
         //} else {//
         //    box[i].color = color(255, 0, 0);
         //}
-
-
         this.canMove = true;
         for (let i = 0; i < box.length; i++) {
             //this.hit1 = collideRectRect(box[i].x, box[i].y, box[i].width, box[i].height, this.x, this.y, this.width, this.height);
@@ -107,8 +89,6 @@ class Orwb {
                 box[j].color = color(0, 255, 0);
 
                 this.onGround = true;
-
-                //set gravity back to initial gravity
                 return;
             } else {
                 box[j].color = color(255, 0, 0);
@@ -137,7 +117,24 @@ class Orwb {
         }
 
         this.applyGravity();
-        //this.jumpAnimation();
+
+        //while jumping
+        if (this.yVel <= 0) {
+            //if collision is detection during a jump, bounce of the bottom side of the box
+            if (this.onGround) {
+                print("yay" + this.yVel);
+                this.y += 20;
+                this.yVel = 1;
+            }
+        }
+
+        if (this.onGround && this.yVel >= 0) {
+            //this movs orwb back to the top of the box
+            let boi = round(this.y / 64);
+            print("xd" + boi);
+            let boi2 = this.y - boi * 64;
+            this.y += boi2;
+        }
     }
 
     //moves orwb to the left
@@ -181,7 +178,6 @@ class Orwb {
 
     //initiates jumping
     jump() {
-
         print("JUMP");
         if (this.onGround) {
             this.yVel = -20;

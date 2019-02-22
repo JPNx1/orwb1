@@ -10,7 +10,7 @@ class Level1 {
         box[1] = new Box(1, 10);
         box[2] = new Box(2, 10);
         box[3] = new Box(3, 10);
-        box[4] = new Box(2, 8);
+        box[4] = new Box(2, 7);
 
 
         //portal
@@ -56,7 +56,7 @@ class Level2 {
         box[2] = new Box(2, 10);
         box[3] = new Box(3, 10);
 
-        box[4] = new Box(2, 8);
+        box[4] = new Box(2, 7);
 
         box[5] = new Box(4, 10);
         box[6] = new Box(5, 10);
@@ -100,7 +100,7 @@ class Level3 {
         box[1] = new Box(1, 10);
         box[2] = new Box(2, 10);
         box[3] = new Box(3, 10);
-        box[4] = new Box(2, 8);
+        box[4] = new Box(2, 7);
 
 
         //portal

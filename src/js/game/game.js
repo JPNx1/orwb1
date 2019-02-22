@@ -40,7 +40,7 @@ function setup() {
     //relocates canvas to the p5 html div
     canvas.parent('p5');
 
-    //frameRate(10);
+    frameRate(60);
 
     //background
     background(255);
