@@ -52,6 +52,12 @@ class Orwb {
             if (collideRectRect(box[j].x, box[j].y, box[j].width, box[j].height, this.x, this.y, this.width, this.height) && this.x >= box[j].x - this.tollerance && this.x <= box[j].x + this.tollerance) {
                 box[j].color = color(0, 255, 0);
                 this.onGround = true;
+                //this movs orwb back to the top of the box
+                if (this.onGround && this.yVel >= 0) {
+                    let boi = round(this.y / 64);
+                    let boi2 = this.y - boi * 64;
+                    this.y += boi2;
+                }
                 return;
             } else {
                 box[j].color = color(255, 0, 0);
@@ -80,12 +86,7 @@ class Orwb {
             }
         }
 
-        //this movs orwb back to the top of the box
-        if (this.onGround && this.yVel >= 0) {
-            let boi = round(this.y / 64);
-            let boi2 = this.y - boi * 64;
-            this.y += boi2;
-        }
+
 
         //orwb dies
         if(this.y>=height){

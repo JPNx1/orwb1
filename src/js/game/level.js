@@ -1,6 +1,10 @@
 //classes for level. They set up the locations and display the boxes, character, enemies and the portals
 class Level1 {
     constructor() {
+        this.initiated = false;
+    }
+
+    initiate() {
         //orwb
         orwb = new Orwb(0, 8);
 
@@ -28,7 +32,7 @@ class Level1 {
         box[19] = new Box(8, 7);
 
         //portal
-        portal = new Portal(10, 9);
+        portal = new Portal(3, 9);
 
         //point
         point = new Points(5, 6);
@@ -58,83 +62,92 @@ class Level1 {
 
 class Level2 {
     constructor() {
-//orwb
-        //orwb = new Orwb(0, 8);
+        this.initiated = false;
+    }
+
+    initiate() {
+        print("levle2 initated");
+        orwb = new Orwb(0, 8);
 
 
         //box
-        //  box[0] = new Box(0, 10);
-        //  box[1] = new Box(1, 10);
-        //  box[2] = new Box(2, 10);
-        //  box[3] = new Box(3, 10);
-//
-        //  box[4] = new Box(2, 7);
-//
-        //  box[5] = new Box(4, 10);
-        //  box[6] = new Box(5, 10);
-        //  box[7] = new Box(6, 10);
-        //  box[8] = new Box(7, 10);
-        //  box[9] = new Box(8, 10);
-        //  box[10] = new Box(9, 10);
-        //  box[11] = new Box(10, 10);
-//
-//
-        //  //portal
-        //  portal1 = new Portal(7, 9);
+        box.length = 0;
+        box[0] = new Box(0, 10);
+        box[1] = new Box(1, 10);
+        box[2] = new Box(2, 10);
+        box[3] = new Box(3, 10);
+
+        box[4] = new Box(5, 5);
+
+        box[5] = new Box(4, 10);
+        box[6] = new Box(5, 10);
+        box[7] = new Box(6, 10);
+        box[8] = new Box(7, 10);
+        box[9] = new Box(1, 10);
+        box[10] = new Box(9, 10);
+        box[11] = new Box(10, 10);
+
+        //portal
+        portal1 = new Portal(7, 9);
     }
 
     display() {
-        //  //print("Level 2");
-        //  background(255);
-        //  //orwb
-        //  orwb.display();
-        //  orwb.update();
+        print("Level 2 yeeeeeet");
+        background(255);
+        //orwb
+        orwb.display();
+        orwb.update();
 
-        //  //box
-        //  for (let i = 0; i < box.length; i++) {
-        //      box[i].display();
-        //      //print(box[i]);
+        //box
+        for (let i = 0; i < box.length; i++) {
+            box[i].display();
+        }
+
+        portal1.display();
+        portal1.update();
     }
 
-    //  //portal
-    //  portal1.display();
-    //  portal1.update();
-    //
+
 }
 
 class Level3 {
     constructor() {
-        ////orwb
-        //orwb = new Orwb(0, 3);
+        this.initiated = false;
+
+    }
+
+    initiate() {
+        //orwb
+        orwb = new Orwb(0, 3);
 
 
-        ////box
-        //box[0] = new Box(0, 10);
-        //box[1] = new Box(1, 10);
-        //box[2] = new Box(2, 10);
-        //box[3] = new Box(3, 10);
-        //box[4] = new Box(2, 7);
+//box
+        box[0] = new Box(0, 10);
+        box[1] = new Box(1, 10);
+        box[2] = new Box(2, 10);
+        box[3] = new Box(3, 10);
+        box[4] = new Box(2, 7);
 
 
-        ////portal
-        //portal2 = new Portal(5, 7);
+//portal
+        portal2 = new Portal(5, 7);
     }
 
     display() {
-        // //print("Level 3");
-        // background(255);
-        // //orwb
-        // orwb.display();
-        // orwb.update();
-//
-        // //box
-        // for (let i = 0; i < box.length; i++) {
-        //     box[i].display();
-        //     //print(box[i]);
-        // }
-        // //portal
-        // portal2.display();
-        // portal2.update();
+        //print("Level 3");
+        background(255);
+        //orwb
+        orwb.display();
+        orwb.update();
+
+        //box
+        for (let i = 0; i < box.length; i++) {
+            box[i].display();
+            //print(box[i]);
+        }
+        //portal
+        portal2.display();
+        portal2.update();
     }
 }
 

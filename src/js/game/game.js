@@ -128,6 +128,7 @@ class Game {
     }
 
     checkState() {
+        print("state: " + this.state + " level: " + this.currentLevel);
         switch (this.state) {
             //welcome
             case 0:
@@ -137,14 +138,27 @@ class Game {
             case 1:
                 switch (this.currentLevel) {
                     case 1:
+                        if (!level1.initiated) {
+                            level1.initiate();
+                            level1.initiated = true;
+                        }
+
                         level1.display();
                         break;
 
                     case 2:
+                        if (!level2.initiated) {
+                            level2.initiate();
+                            level2.initiated = true;
+                        }
                         level2.display();
                         break;
 
                     case 3:
+                        if (!level3.initiated) {
+                            level3.initiate();
+                            level3.initiated = true;
+                        }
                         level3.display();
                         break;
                 }

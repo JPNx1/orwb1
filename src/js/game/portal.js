@@ -22,17 +22,17 @@ class Portal {
 
         //determines to which level orwb is being ported
         if (this.hit) {
-            fill(color(0, 255, 0, 100));
-            rect(0, 0, width, height);
-            print("new level");
+            print("portal hit at : " + game.currentLevel);
 
             switch (game.currentLevel) {
                 case 1:
                     game.currentLevel = 2;
                     break;
+
                 case 2:
                     game.currentLevel = 3;
                     break;
+
                 case 3:
                     //in this case, the game is over!
                     game.state = 4;
@@ -40,5 +40,4 @@ class Portal {
             }
         }
     }
-
 }
