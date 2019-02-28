@@ -103,6 +103,9 @@ class Level2 {
             box[i].display();
         }
 
+
+        orwb.drawStuff();
+
         portal1.display();
         portal1.update();
     }
