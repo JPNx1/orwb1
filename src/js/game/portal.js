@@ -18,7 +18,7 @@ class Portal {
 
     //if collision detected, orwb reached the portal and goes to the next level
     detectCollision() {
-        this.hit = collideRectCircle(orwb.x, orwb.y, orwb.width, orwb.height, this.x, this.y, this.radius);
+        this.hit = collideCircleCircle(orwb.x, orwb.y, orwb.radius, this.x, this.y, this.radius);
 
         //determines to which level orwb is being ported
         if (this.hit) {

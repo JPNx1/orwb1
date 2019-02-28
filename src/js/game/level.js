@@ -66,8 +66,7 @@ class Level2 {
     }
 
     initiate() {
-        print("levle2 initated");
-        orwb = new Orwb(0, 8);
+        orwb = new Orwb(0, 0);
 
 
         //box
@@ -92,7 +91,7 @@ class Level2 {
     }
 
     display() {
-        print("Level 2 yeeeeeet");
+
         background(255);
         //orwb
         orwb.display();

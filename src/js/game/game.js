@@ -128,7 +128,7 @@ class Game {
     }
 
     checkState() {
-        print("state: " + this.state + " level: " + this.currentLevel);
+        //print("state: " + this.state + " level: " + this.currentLevel);
         switch (this.state) {
             //welcome
             case 0:

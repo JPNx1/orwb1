@@ -8,7 +8,7 @@ class Points {
     }
 
     detectCollision(){
-        this.hit = collideRectCircle(orwb.x, orwb.y, orwb.width, orwb.height, this.x, this.y, this.radius);
+        this.hit = collideCircleCircle(orwb.x, orwb.y, orwb.radius, this.x, this.y, this.radius);
     }
 
     update(){

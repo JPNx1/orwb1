@@ -1,8 +1,9 @@
 //palyer character
 class Orwb {
     constructor(x, y) {
-        this.x = game.squareX * x;
-        this.y = game.squareY * y;
+        this.x = (game.squareX * x) + 32;
+        this.y = (game.squareY * y) + 32;
+
         this.width = 64;
         this.height = 64;
 
@@ -19,7 +20,8 @@ class Orwb {
     //displays orwb
     display() {
         fill(0);
-        rect(this.x, this.y, this.width, this.height);
+        ellipse(this.x, this.y, this.width, this.height);
+        print(this.x, this.y);
     }
 
     //applies gravity to orwb
@@ -52,12 +54,6 @@ class Orwb {
             if (collideRectRect(box[j].x, box[j].y, box[j].width, box[j].height, this.x, this.y, this.width, this.height) && this.x >= box[j].x - this.tollerance && this.x <= box[j].x + this.tollerance) {
                 box[j].color = color(0, 255, 0);
                 this.onGround = true;
-                //this movs orwb back to the top of the box
-                if (this.onGround && this.yVel >= 0) {
-                    let boi = round(this.y / 64);
-                    let boi2 = this.y - boi * 64;
-                    this.y += boi2;
-                }
                 return;
             } else {
                 box[j].color = color(255, 0, 0);
@@ -86,7 +82,12 @@ class Orwb {
             }
         }
 
-
+        //this movs orwb back to the top of the box
+        if (this.onGround && this.yVel >= 0) {
+            let boi = round((this.y - 32) / 64);
+            let boi2 = this.y - (boi * 64) +32;
+            this.y += boi2;
+        }
 
         //orwb dies
         if(this.y>=height){
