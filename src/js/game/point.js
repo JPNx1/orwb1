@@ -1,28 +1,26 @@
 //todo add points
 class Points {
-    constructor(x, y){
-        this.x = game.squareX * x;
-        this.y = game.squareY * y;
+    constructor(x, y) {
+        this.x = game.squareX * x + 32;
+        this.y = game.squareY * y + 32;
         this.radius = 20;
-        this.hit = false;
+        this.color = color(255, 255, 0);
     }
 
-    detectCollision(){
+    detectCollision() {
         this.hit = collideRectCircle(orwb.x, orwb.y, orwb.width, orwb.height, this.x, this.y, this.radius);
     }
 
-    update(){
-        this.detectCollision();
-        if(!this.hit){
+    update() {
+        if (collideRectCircle(orwb.x, orwb.y, orwb.width, orwb.height, this.x, this.y, this.radius)) {
 
-            this.display();
+            this.color = color(0);
         }
     }
 
 
-    display(){
-        fill(color(0, 255, 0));
+    display() {
+        fill(this.color);
         ellipse(this.x, this.y, this.radius);
     }
-
 }

@@ -1,27 +1,30 @@
 class Portal {
     constructor(x, y) {
-        this.x = game.squareX * x;
-        this.y = game.squareY * y;
-        this.radius = 20;
-        this.color = color(255, 255, 0);
-        this.hit = false;
+        this.x = game.squareX * x + 32;
+        this.y = game.squareY * y + 32;
+        this.radius = 50;
+
+        this.color = color(0, 0, 255);
+
+
     }
 
     display() {
         fill(this.color);
-        ellipse(this.x, this.y, this.radius, this.radius);
+        ellipse(this.x, this.y, this.radius-10, this.radius);
+        fill(0);
+        ellipse(this.x, this.y, this.radius-20, this.radius-10);
     }
 
     update() {
         this.detectCollision();
+        this.display();
     }
 
     //if collision detected, orwb reached the portal and goes to the next level
     detectCollision() {
-        this.hit = collideRectCircle(orwb.x, orwb.y, orwb.width, orwb.height, this.x, this.y, this.radius);
-
         //determines to which level orwb is being ported
-        if (this.hit) {
+        if (collideRectCircle(orwb.x, orwb.y, orwb.width, orwb.height, this.x, this.y-10, this.radius)) {
             print("portal hit at : " + game.currentLevel);
 
             switch (game.currentLevel) {

@@ -45,7 +45,7 @@ class EndScreen {
         fill(color(255, 255, 0));
         textSize(50);
         textAlign(CENTER);
-        text("Game over!", width / 2, height / 2);
+        text("ORWB IS DEAD!", width / 2, height / 2);
         text("Press Enter to restart", width / 2, height / 1.5);
     }
 }

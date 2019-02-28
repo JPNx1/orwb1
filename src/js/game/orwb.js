@@ -4,8 +4,8 @@ class Orwb {
         this.x = game.squareX * x;
         this.y = game.squareY * y;
 
-        this.yWithOffset =0;
-        this.xWithOffset=0;
+        this.yWithOffset = 0;
+        this.xWithOffset = 0;
 
         this.width = 64;
         this.height = 64;
@@ -13,32 +13,35 @@ class Orwb {
         //moving bools
         this.onGround = false;
         this.canMove = true;
+        this.isBouncing = false;
 
         //moving vars
-        this.speed = 10;
+        this.speed = 8;
         this.yVel = 0;
-        this.tollerance = 59;
+        this.tollerance = 30;
+        this.tollerance1 = 63;
 
         //visibility vars
-        this.radius = 250;
+        this.radius = game.squareX * 3;
     }
 
     //displays orwb
     display() {
-        this.yWithOffset = this.y +32;
-        this.xWithOffset = this.x +32;
+        this.yWithOffset = this.y + 32;
+        this.xWithOffset = this.x + 32;
 
         //hitbox
         fill(0);
         rect(this.x, this.y, this.width, this.height);
 
         //orwb
-
         //yellow base circle for body
         //noStroke();
         fill(color(255, 212, 0));
         ellipse(this.xWithOffset, this.yWithOffset, this.width);
 
+        //fill(0);
+        //rect(this.x, this.yWithOffset -21, 64, 9);
 
         //black circles for eyes
         fill(color(0, 0, 0));
@@ -49,6 +52,11 @@ class Orwb {
         fill(color(255, 255, 255));
         ellipse(this.xWithOffset - 5, this.yWithOffset - 15, 5);
         ellipse(this.xWithOffset + 15, this.yWithOffset - 15, 5);
+
+        fill(0);
+        text("Tommy", this.xWithOffset, this.yWithOffset - 40);
+
+
     }
 
     //applies gravity to orwb
@@ -67,24 +75,29 @@ class Orwb {
     //Checks if the character has a vertical collision with the boxes. It is called before moving left or right
     horizontalCollision() {
         this.canMove = true;
-        for (let i = 0; i < box.length; i++) {
-            if (collideRectRect(box[i].x, box[i].y, box[i].width, box[i].height, this.x, this.y, this.width, this.height)
-                && this.y >= box[i].y - this.tollerance && this.y <= box[i].y + this.tollerance) {
+        for (let i = 0; i < boxes.length; i++) {
+            if (collideRectRect(boxes[i].x, boxes[i].y, boxes[i].width, boxes[i].height, this.x, this.y, this.width, this.height)
+                && this.y >= boxes[i].y - this.tollerance && this.y <= boxes[i].y + this.tollerance) {
                 this.canMove = false;
+                //boxes[i].color = color(0, 0, 255);
+            } else {
+                //boxes[i].color = color(255, 0, 0);
+
             }
         }
     }
 
     //checks if the character hits the ground. Is called every time before gravity is applied
     verticalCollision() {
-        for (let j = 0; j < box.length; j++) {
-            if (collideRectRect(box[j].x, box[j].y, box[j].width, box[j].height, this.x, this.y, this.width, this.height) && this.x >= box[j].x - this.tollerance && this.x <= box[j].x + this.tollerance) {
-                box[j].color = color(0, 255, 0);
+        for (let j = 0; j < boxes.length; j++) {
+            if (collideRectRect(boxes[j].x, boxes[j].y, boxes[j].width, boxes[j].height, this.x, this.y, this.width, this.height) && this.x >= boxes[j].x - this.tollerance1 &&
+                this.x <= boxes[j].x + this.tollerance1) {
+                //boxes[j].color = color(0, 255, 0);
                 this.onGround = true;
                 this.bounce();
                 return;
             } else {
-                box[j].color = color(255, 0, 0);
+                //boxes[j].color = color(255, 0, 0);
                 this.onGround = false;
             }
         }
@@ -102,7 +115,7 @@ class Orwb {
 
         this.applyGravity();
 
-        //if collision is detection during a jump, bounce of the bottom side of the box
+        //if collision is detection during a jump, bounce of the bottom side of the boxes
         if (this.yVel <= 0) {
             if (this.onGround) {
                 this.y += 20;
@@ -111,24 +124,29 @@ class Orwb {
         }
 
         //orwb dies
-        if(this.y>=height){
-            game.state =4;
+        if (this.y >= height) {
+            game.state = 4;
         }
     }
 
-    bounce(){
-        //this movs orwb back to the top of the box
+    bounce() {
+        //this movs orwb back to the top of the boxes
         if (this.onGround && this.yVel >= 0) {
-            let boi = round(this.y / 64);
-            let boi2 = this.y - boi * 64;
-            this.y += boi2;
+            this.isBouncing = true;
+
+            let onWhichBox = round(this.y / 64);
+            //print(onWhichBox, onWhichBox*64);
+            this.y -= (this.y - onWhichBox * 64);
+
+
         }
+        this.isBouncing = false;
     }
 
     //moves orwb to the left
     moveLeft() {
         this.horizontalCollision();
-        if (this.x >= 0 && this.canMove) {
+        if (this.x >= 0 && this.canMove && !this.isBouncing) {
             this.x -= this.speed;
         } else {
             this.x += this.speed;
@@ -138,9 +156,10 @@ class Orwb {
     //moves orwb to the right
     moveRight() {
         this.horizontalCollision();
-        if (this.x <= width - this.width && this.canMove) {
+        if (this.x <= width - this.width && this.canMove && !this.isBouncing) {
             this.x += this.speed;
         } else {
+
             this.x -= this.speed;
         }
     }
@@ -153,12 +172,25 @@ class Orwb {
         }
     }
 
-    drawStuff(){
-        for (let i = 0; i < box.length; i++) {
-            if(pow(this.y - b[i].x) + pow(this.y - b[i].y) < pow(this.radius)){
-                b[i].draw();
+    drawStuff() {
+        for (let i = 0; i < boxes.length; i++) {
+            if (pow(this.x - boxes[i].x, 2) + pow(this.y - boxes[i].y, 2) < pow(this.radius, 2)) {
+                boxes[i].display();
             }
         }
 
+
+        for (let i = 0; i < cats.length; i++) {
+            if (pow(this.x - cats[i].x, 2) + pow(this.y - cats[i].y, 2) < pow(this.radius, 2)) {
+                cats[i].display();
+
+            }
+        }
+
+        for (let i = 0; i < fallingCats.length; i++) {
+            if (pow(this.x - fallingCats[i].x, 2) + pow(this.y - fallingCats[i].y, 2) < pow(this.radius, 2)) {
+                fallingCats[i].display();
+            }
+        }
     }
 }

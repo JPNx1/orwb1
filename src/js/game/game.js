@@ -15,18 +15,19 @@ let endScreen;
 
 let orwb;
 
-let box = [];
-let point;
+let boxes = [];
+let points = [];
 
 let portal;
-let portal1;
-let portal2;
 
 let level1;
 let level2;
 let level3;
 
-//todo add level setups, point system, enemies, collision stuff, timer, main function (orwb as light source!)
+let cats = [];
+let fallingCats = [];
+
+//todo add level setups, points system, enemies, collision stuff, timer, main function (orwb as light source!)
 
 function setup() {
     //create canvas
@@ -47,11 +48,12 @@ function setup() {
 }
 
 function draw() {
+    noStroke();
     background(0);
 
     //game
     game.checkState();
-    game.grid();
+    //game.grid();
 }
 
 function keyPressed() {
@@ -128,7 +130,7 @@ class Game {
     }
 
     checkState() {
-        print("state: " + this.state + " level: " + this.currentLevel);
+        //print("state: " + this.state + " level: " + this.currentLevel);
         switch (this.state) {
             //welcome
             case 0:

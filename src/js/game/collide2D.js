@@ -69,11 +69,11 @@ p5.prototype.collidePointCircle = function (x, y, cx, cy, d) {
 p5.prototype.collidePointEllipse = function (x, y, cx, cy, dx, dy) {
     //2d
     var rx = dx/2, ry = dy/2;
-    // Discarding the points outside the bounding box
+    // Discarding the points outside the bounding boxes
     if (x > cx + rx || x < cx - rx ||y > cy + ry || y < cy - ry) {
         return false;
     }
-    // Compare the point to its equivalent on the ellipse
+    // Compare the points to its equivalent on the ellipse
     var xx = x - cx, yy = y - cy;
     var eyy = ry * this.sqrt(this.abs(rx * rx - xx * xx)) / rx;
     return yy <= eyy && yy >= -eyy;
@@ -91,7 +91,7 @@ p5.prototype.collidePointRect = function (pointX, pointY, x, y, xW, yW) {
 };
 
 p5.prototype.collidePointLine = function(px,py,x1,y1,x2,y2, buffer){
-    // get distance from the point to the two ends of the line
+    // get distance from the points to the two ends of the line
     var d1 = this.dist(px,py, x1,y1);
     var d2 = this.dist(px,py, x2,y2);
 
@@ -101,7 +101,7 @@ p5.prototype.collidePointLine = function(px,py,x1,y1,x2,y2, buffer){
 // since floats are so minutely accurate, add a little buffer zone that will give collision
     if (buffer === undefined){ buffer = 0.1; }   // higher # = less accurate
 
-// if the two distances are equal to the line's length, the point is on the line!
+// if the two distances are equal to the line's length, the points is on the line!
 // note we use the buffer here to give a range, rather than one #
     if (d1+d2 >= lineLen-buffer && d1+d2 <= lineLen+buffer) {
         return true;
@@ -124,21 +124,21 @@ p5.prototype.collideLineCircle = function( x1,  y1,  x2,  y2,  cx,  cy,  diamete
     // get dot product of the line and circle
     var dot = ( ((cx-x1)*(x2-x1)) + ((cy-y1)*(y2-y1)) ) / this.pow(len,2);
 
-    // find the closest point on the line
+    // find the closest points on the line
     var closestX = x1 + (dot * (x2-x1));
     var closestY = y1 + (dot * (y2-y1));
 
-    // is this point actually on the line segment?
+    // is this points actually on the line segment?
     // if so keep going, but if not, return false
     var onSegment = this.collidePointLine(closestX,closestY,x1,y1,x2,y2);
     if (!onSegment) return false;
 
-    // draw a debug circle at the closest point on the line
+    // draw a debug circle at the closest points on the line
     if(this._collideDebug){
         this.ellipse(closestX, closestY,10,10);
     }
 
-    // get distance to closest point
+    // get distance to closest points
     distX = closestX - cx;
     distY = closestY - cy;
     var distance = this.sqrt( (distX*distX) + (distY*distY) );
@@ -153,7 +153,7 @@ p5.prototype.collideLineLine = function(x1, y1, x2, y2, x3, y3, x4, y4,calcInter
 
     var intersection;
 
-    // calculate the distance to intersection point
+    // calculate the distance to intersection points
     var uA = ((x4-x3)*(y1-y3) - (y4-y3)*(x1-x3)) / ((y4-y3)*(x2-x1) - (x4-x3)*(y2-y1));
     var uB = ((x2-x1)*(y1-y3) - (y2-y1)*(x1-x3)) / ((y4-y3)*(x2-x1) - (x4-x3)*(y2-y1));
 
@@ -161,7 +161,7 @@ p5.prototype.collideLineLine = function(x1, y1, x2, y2, x3, y3, x4, y4,calcInter
     if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
 
         if(this._collideDebug || calcIntersection){
-            // calc the point where the lines meet
+            // calc the points where the lines meet
             var intersectionX = x1 + (uA * (x2-x1));
             var intersectionY = y1 + (uA * (y2-y1));
         }
@@ -376,7 +376,7 @@ p5.prototype.collidePointTriangle = function(px, py, x1, y1, x2, y2, x3, y3) {
     // get the area of the triangle
     var areaOrig = this.abs( (x2-x1)*(y3-y1) - (x3-x1)*(y2-y1) );
 
-    // get the area of 3 triangles made between the point and the corners of the triangle
+    // get the area of 3 triangles made between the points and the corners of the triangle
     var area1 =    this.abs( (x1-px)*(y2-py) - (x2-px)*(y1-py) );
     var area2 =    this.abs( (x2-px)*(y3-py) - (x3-px)*(y2-py) );
     var area3 =    this.abs( (x3-px)*(y1-py) - (x1-px)*(y3-py) );
@@ -405,9 +405,9 @@ p5.prototype.collidePointArc = function(px, py, ax, ay, arcRadius, arcHeading, a
     if (buffer == undefined) {
         buffer = 0;
     }
-    // point
+    // points
     var point = this.createVector(px, py);
-    // arc center point
+    // arc center points
     var arcPos = this.createVector(ax, ay);
     // arc radius vector
     var radius = this.createVector(arcRadius, 0).rotate(arcHeading);

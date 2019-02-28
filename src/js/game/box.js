@@ -3,8 +3,8 @@ class Box {
         this.x = game.squareX * x;
         this.y = game.squareY * y;
         this.width = 64;
-        this.height = 64;
-        this.color = color(255, 0, 0);
+        this.height = 32;
+        this.color = color(161, 161, 161);
     }
 
     display() {
