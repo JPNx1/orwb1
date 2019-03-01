@@ -5,6 +5,15 @@ https://thecodingtrain.com/
 https://www.youtube.com/channel/UCvjgXvBlbQiydffZU7m1_aw
 https://creative-coding.decontextualize.com/making-games-with-p5-play/
 https://gamedevelopment.tutsplus.com/tutorials/quick-tip-avoid-game-watch-gravity-in-your-characters-jumps--gamedev-6759
+
+sounds:
+https://freesound.org/people/OwlStorm/sounds/404747/
+https://freesound.org/people/ProjectsU012/sounds/341695/
+https://freesound.org/people/jalastram/sounds/386658/
+https://freesound.org/people/deleted_user_877451/sounds/76376/
+https://freesound.org/people/LittleRobotSoundFactory/sounds/270333/
+https://freesound.org/people/Sergenious/sounds/55843/
+
  */
 let canvas;
 let game;
@@ -12,6 +21,7 @@ let game;
 let welcomeScreen;
 let pauseScreen;
 let endScreen;
+let winScreen;
 
 let orwb;
 
@@ -26,6 +36,14 @@ let level3;
 
 let cats = [];
 let fallingCats = [];
+let jumpSound;
+let coinSound;
+let damageSound;
+let gameOverSound;
+let winSound;
+let warpSound;
+
+
 
 //todo add level setups, points system, enemies, collision stuff, timer, main function (orwb as light source!)
 
@@ -45,6 +63,13 @@ function setup() {
     //game
     game = new Game();
     game.initiate();
+    jumpSound = loadSound("sound/jump.wav");
+    coinSound = loadSound("sound/coins.wav");
+    damageSound = loadSound("sound/damage.wav");
+    gameOverSound = loadSound("sound/game-over.wav");
+    winSound = loadSound("sound/intro.wav");
+    warpSound = loadSound("sound/warp.wav");
+
 }
 
 function draw() {
@@ -90,7 +115,7 @@ function keyPressed() {
                 game.currentLevel = 1;
             }
 
-            if (game.state === 4) {
+            if (game.state === 4 || game.state === 5) {
                 game.state = 0;
                 game.initiate();
             }
@@ -106,6 +131,8 @@ class Game {
         this.gridY = 11;
         this.squareX = ((width - 1) / this.gridX);
         this.squareY = ((width - 1) / this.gridY);
+        this.points = 0;
+        this.tries = 3;
     }
 
     grid() {
@@ -118,15 +145,50 @@ class Game {
     }
 
     initiate() {
+        this.points = 0;
         //screen
         welcomeScreen = new WelcomeScreen();
         pauseScreen = new PauseScreen();
         endScreen = new EndScreen();
+        winScreen = new WinScreen();
 
         //levels
         level1 = new Level1();
         level2 = new Level2();
         level3 = new Level3();
+
+    }
+
+    tryMinus() {
+        this.tries--;
+        //print("tries: " + this.tries);
+        if (this.tries > 0) {
+            damageSound.play();
+            //level.restart
+            switch (this.currentLevel) {
+                case 1:
+                    level1.restart();
+                    break;
+                case 2:
+                    level2.restart();
+                    break;
+                case 3:
+                    level3.restart();
+                    break;
+            }
+        } else {
+            gameOverSound.play();
+            game.state = 4;
+            game.tries = 3;
+        }
+    }
+
+    drawPoints() {
+        fill(255, 255, 0);
+        textSize(20);
+        text("Points: " + this.points, 60, 50);
+
+        text("Tries: " + this.tries, width-60, 50);
     }
 
     checkState() {
@@ -138,9 +200,12 @@ class Game {
                 break;
             //running
             case 1:
+
+                this.drawPoints();
                 switch (this.currentLevel) {
                     case 1:
                         if (!level1.initiated) {
+
                             level1.initiate();
                             level1.initiated = true;
                         }
@@ -150,6 +215,7 @@ class Game {
 
                     case 2:
                         if (!level2.initiated) {
+
                             level2.initiate();
                             level2.initiated = true;
                         }
@@ -158,6 +224,7 @@ class Game {
 
                     case 3:
                         if (!level3.initiated) {
+
                             level3.initiate();
                             level3.initiated = true;
                         }
@@ -178,7 +245,14 @@ class Game {
 
             //game over
             case 4:
+
                 endScreen.display();
+
+                break;
+            case 5:
+
+                winScreen.display();
+
                 break;
         }
     }

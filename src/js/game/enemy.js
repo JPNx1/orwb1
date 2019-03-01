@@ -37,7 +37,7 @@ class Cat {
 
     update() {
         if (collideRectCircle(orwb.x, orwb.y, orwb.width, orwb.height, this.x, this.y, this.width, this.heigth)) {
-            game.state = 4;
+            orwb.getDamage();
         }
     }
 }
@@ -87,7 +87,7 @@ class FallingCat {
 
     update() {
         if (collideRectCircle(orwb.x, orwb.y, orwb.width, orwb.height, this.x, this.y, this.width, this.heigth)) {
-            game.state = 4;
+            orwb.getDamage();
         }
         this.applyGravity();
     }

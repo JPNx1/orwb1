@@ -9,6 +9,7 @@ class Orwb {
 
         this.width = 64;
         this.height = 64;
+        this.color = color(255, 212, 0);
 
         //moving bools
         this.onGround = false;
@@ -22,7 +23,13 @@ class Orwb {
         this.tollerance1 = 63;
 
         //visibility vars
-        this.radius = game.squareX * 3;
+        this.radiusMultiplier = 4;
+        this.radius = game.squareX * this.radiusMultiplier;
+        this.counter = 0;
+        this.damaged = false;
+        this.health = 3;
+
+
     }
 
     //displays orwb
@@ -37,7 +44,7 @@ class Orwb {
         //orwb
         //yellow base circle for body
         //noStroke();
-        fill(color(255, 212, 0));
+        fill(this.color);
         ellipse(this.xWithOffset, this.yWithOffset, this.width);
 
         //fill(0);
@@ -53,8 +60,8 @@ class Orwb {
         ellipse(this.xWithOffset - 5, this.yWithOffset - 15, 5);
         ellipse(this.xWithOffset + 15, this.yWithOffset - 15, 5);
 
-        fill(0);
-        text("Tommy", this.xWithOffset, this.yWithOffset - 40);
+        //fill(0);
+        //text("Tommy", this.xWithOffset, this.yWithOffset - 40);
 
 
     }
@@ -125,8 +132,11 @@ class Orwb {
 
         //orwb dies
         if (this.y >= height) {
-            game.state = 4;
+            game.tryMinus();
         }
+
+        this.checkDamaged();
+
     }
 
     bounce() {
@@ -169,10 +179,13 @@ class Orwb {
         if (this.onGround) {
             this.yVel = -20;
             this.y += this.yVel;
+            jumpSound.play();
         }
     }
 
     drawStuff() {
+        this.radius = game.squareX * this.radiusMultiplier;
+
         for (let i = 0; i < boxes.length; i++) {
             if (pow(this.x - boxes[i].x, 2) + pow(this.y - boxes[i].y, 2) < pow(this.radius, 2)) {
                 boxes[i].display();
@@ -192,5 +205,39 @@ class Orwb {
                 fallingCats[i].display();
             }
         }
+    }
+
+    checkDamaged() {
+        if (this.damaged) {
+            this.counter++;
+
+            if (this.counter === 3) {
+                this.color = color(255, 212, 0);
+            }
+            if (this.counter >= 60) {
+                this.damaged = false;
+                this.counter = 0;
+            }
+        }
+    }
+
+
+    getDamage() {
+        if (!this.damaged) {
+
+            this.radiusMultiplier--;
+            this.color = color(255, 0, 0);
+            //print("damaged!!!" + this.radiusMultiplier);
+            damageSound.play();
+
+        }
+        if (this.radiusMultiplier === 1) {
+            this.health--;
+
+            if (this.health === 0) {
+                game.tryMinus();
+            }
+        }
+        this.damaged = true;
     }
 }

@@ -8,6 +8,7 @@ class Level1 {
         boxes.length = 0;
         cats.length = 0;
         fallingCats.length = 0;
+        points.length =0;
 
         //orwb
         orwb = new Orwb(0, 8);
@@ -52,6 +53,12 @@ class Level1 {
         fallingCats[0] = new FallingCat(2, 3);
     }
 
+
+    restart(){
+        //orwb
+        orwb = new Orwb(0, 8);
+    }
+
     display() {
         //background(255);
 
@@ -91,6 +98,7 @@ class Level2 {
         boxes.length = 0;
         cats.length = 0;
         fallingCats.length = 0;
+        points.length =0;
 
         //orwb
         orwb = new Orwb(10, 0);
@@ -114,9 +122,9 @@ class Level2 {
         boxes[9] = new Box(9, 5);
         boxes[10] = new Box(10, 5);
 
-        boxes[11] = new Box(4, 5);
-        boxes[12] = new Box(5, 5);
-        boxes[13] = new Box(6, 5);
+        boxes[11] = new Box(4, 3);
+        boxes[12] = new Box(5, 3);
+        boxes[13] = new Box(6, 3);
 
         boxes[14] = new Box(7, 2);
         boxes[15] = new Box(8, 2);
@@ -139,6 +147,11 @@ class Level2 {
 
         cats[0] = new Cat(0, 4);
 
+    }
+
+    restart(){
+        //orwb
+        orwb = new Orwb(10, 0);
     }
 
     display() {
@@ -182,6 +195,7 @@ class Level3 {
         boxes.length = 0;
         cats.length = 0;
         fallingCats.length = 0;
+        points.length =0;
 
 
         //orwb
@@ -236,6 +250,12 @@ class Level3 {
         cats[3] = new Cat(1, 9);
 
     }
+
+    restart(){
+        //orwb
+        orwb = new Orwb(10, 7);
+    }
+
 
     display() {
         //background(255);
