@@ -44,6 +44,9 @@ canvas{
     src: url("../fonts/ITCKabelStd-Bold.otf");
 }
 
+#p5{
+    text-align: center;
+}
 #p5 h1{
     color: #ffb628;
     font-family: "Courier New";
